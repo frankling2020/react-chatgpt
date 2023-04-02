@@ -15,9 +15,16 @@
 <p>
     The source code for the summarizer can be found in the <em>src</em> folder, which contains all the primary implementation files. It contains the components including Form and Histogram in <em>src/components</em> and the main file <em>App.js</em>. The application leverages several techniques to achieve its objectives, including Jaccard similarity and a histogram of word length frequency, which respectively delineate the connection to the original text and comprehensibility.
 </p>
-<p>
-    <strong>Basic rules</strong> are: (1) if the Jaccard similarity is lower than 0.7, you may doubt the results; (2) if the length of most words are shorter, then it will be easy to read.
-</p>
+
+#### Justification
+- Jaccard similarity is widely used to compute the similarity of two set. In this case, I calculate it with respect to keywords.
+- Word length frequency can somehow reflect the frequency of rare words and [one paper](https://arxiv.org/abs/2301.11305v1) also shows that there are some statistical patterns in machine-generated texts. 
+    Word length may be one way to approach the ChatGPT detection. It will be meaningful to visualize the distribution.   
+
+#### <strong>Basic rules</strong> are:
+- If the Jaccard similarity is lower than 0.7, you may doubt the results.
+- If the length of most words are shorter, then it will be easy to read.
+
 <p>
     For the web interface part, the public folder contains some basic information.
 </p>
@@ -38,7 +45,7 @@
     It is designed to be user-friendly and easily accessible to users with different technical backgrounds. To use the application, users may first follow the <a href="https://platform.openai.com/account/api-keys">link</a> on the first page to fetch their OpenAI API key which will be memorized before pressing the reset button, and paste the text to the form. After submitting the form, the original text will be rendered on the left side of the window, people may read some when they are waiting for the results from ChatGPT. After receiving the ChatGPT response, the browser will directly highlight the keywords in the original text and summary and compute the Jaccard similarity with respect to the keywords' appearance in the original text and summary.
 </p>
 <p>
-    For people who know nothing about Jaccard similarity, the basic rule is that the result with Jaccard similarity below 0.8 may include some fabricated information.
+    For people who know nothing about Jaccard similarity, the basic rule is that the result with Jaccard similarity below 0.7 may include some extra/fabricated information.
 </p>
 
 <div align="center">
