@@ -174,7 +174,13 @@ function App(props) {
 	const jaccardView = (<div><em>Jaccard Similarity: { jaccard }</em></div>);
 	const summaryView = (
 		<div className="column todoapp stack-large scrollable">
-			<h1>Summary and Keywords</h1>
+			<h1>Summary and Keywords
+			<div style={{fontSize: "medium", color: "gray"}}>
+				<em>
+					For interpretation of analysis and visualization, see <a href="https://github.com/frankling2020/react-chatgpt#basic-rules-are">here</a>.
+				</em>
+			</div>
+			</h1>
 			{jaccard !== -1 && jaccardView}
 			<div className="css-fix"> 
 				{response} 
