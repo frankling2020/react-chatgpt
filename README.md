@@ -2,7 +2,7 @@
     React-ChatGPT
 </h1>
 <p align="center">
-    <strong>Simpel Summarizer based on ChatGPT</strong>
+    <strong>Simple Summarizer based on ChatGPT</strong>
 </p>
 
 ## Simple Summarizer
