@@ -1,5 +1,7 @@
-// Based on codes from https://www.react-graph-gallery.com/histogram
-// it is a histogram that shows the distribution of the length of words in the text
+/** Based on codes from https://www.react-graph-gallery.com/histogram
+* it is a histogram that shows the distribution of the length of words
+* in the text
+*/
 
 import { useEffect, useMemo, useRef } from 'react';
 import * as d3 from 'd3';
@@ -31,7 +33,7 @@ export const Histogram = ({ width, height, data }) => {
       .bin()
       .value((d) => d)
       .domain(xScale.domain())
-      .thresholds(xScale.ticks(BUCKET_NUMBER))
+      .thresholds(xScale.ticks(BUCKET_NUMBER));
     return bucketGenerator(data);
   }, [xScale, data]);
 
@@ -63,7 +65,7 @@ export const Histogram = ({ width, height, data }) => {
       .style('text-anchor', 'middle')
       .style('font-size', '12px')
       .style('font-weight', 'bold')
-      .text('Word Length Count in Summary')
+      .text('Word Length Count in Summary');
   }, [xScale, yScale, boundsHeight, width]);
 
   // create the rectangles for the histogram

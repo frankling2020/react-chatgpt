@@ -1,14 +1,18 @@
-// Desc: This is the main component of the application.
-// Author: hyfrankl
-
-// Import dependencies
+/** Desc: This is the main component of the application.
+* Author: hyfrankl
+*/
 import React, { useState } from 'react';
 import Form from './components/Form';
 import { Configuration, OpenAIApi } from 'openai';
 import { Histogram } from './components/Histogram';
 
+/** The main component of the application
+* @return {*} the main component
+*/
 function App() {
-  // Create state variables for response, submitView, jaccard, query, api, inputText
+  /** Create state variables for response, submitView, jaccard,
+  * query, api, inputText
+  */
   // response: the response from the OpenAI API rendered with highlighting
   const [response, setResponse] = useState('Hello from ChatGPT!');
   // submitView: a boolean to determine whether to show the form or the response
@@ -26,28 +30,35 @@ function App() {
   const text = `
     Please do the task step-by-step:
     1. summarize the following text.
-    2. extract keywords or important concepts from the summary or the original text 
-    and output those words in a new paragraph at the end of the respoonse where 
-    each word is separated by a comma after "Keywords:".
+    2. extract keywords or important concepts from the summary or
+    the original text and output those words in a new paragraph
+    at the end of the respoonse where each word is separated by
+    a comma after "Keywords:".
   `;
 
-  // Create a function to generate a random pastel color
-  // to avoid any dark colors that may be hard to read
+  /** Create a function to generate a random pastel color
+  * to avoid any dark colors that may be hard to read
+  * @return {*} a random pastel color
+  */
   const getRandomPastelColor = () => {
     const h = Math.floor(Math.random() * 360);
     return `hsl(${h}deg, 100%, 90%)`;
   };
 
-  // Create a function to fetch the response from the OpenAI API
-  // using the input text and the API key
-  // and return a promise that resolves to the response
+  /** Create a function to fetch the response from the OpenAI API
+  * using the input text and the API key
+  * and return a promise that resolves to the response
+  */
   const fetchResponse = async (input, apiKey) => {
     const config = new Configuration({ apiKey });
     const openai = new OpenAIApi(config);
 
     return openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      messages: [{ role: 'system', content: text }, { role: 'user', content: input }]
+      messages: [
+        { role: 'system', content: text },
+        { role: 'user', content: input }
+      ],
     });
   };
 
@@ -80,8 +91,14 @@ function App() {
       if (result.match(regWord) && q.match(regWord)) {
         jaccardSim += 1;
       }
-      result = result.replaceAll(regWord, `<mark style='background: ${color}!important'>$&</mark>`);
-      q = q.replaceAll(regWord, `<mark style='background: ${color}!important'>$&</mark>`);
+      result = result.replaceAll(
+        regWord,
+        `<mark style='background: ${color}!important'>$&</mark>`
+      );
+      q = q.replaceAll(
+        regWord,
+        `<mark style='background: ${color}!important'>$&</mark>`
+      );
     }
     jaccardSim /= keywords.length;
     setJaccard(jaccardSim.toFixed(3));
@@ -93,22 +110,27 @@ function App() {
     const answer = await fetchResponse(input, api);
     let result = answer.data.choices[0].message.content;
     result = result.substring(0, result.length - 1);
-    const paragraphs = result.split('\n\n').map((paragraph) => { return paragraph.trim().trimEnd('.'); })
+    const paragraphs = result.split('\n\n').map((paragraph) => {
+      return paragraph.trim().trimEnd('.');
+    });
     const keywords = paragraphs[paragraphs.length - 1]
       .split(':')[1].split(',')
-      .map((keyword) => { return keyword.trim(); });
+      .map((keyword) => {
+        return keyword.trim();
+      });
     const [r, q] = highlightKeywords(keywords, result, input);
 
     setResponse(<div dangerouslySetInnerHTML={{ __html: r }} />);
     setQuery(<div dangerouslySetInnerHTML={{ __html: q }} />);
     const words = result.toLowerCase().split(/\s+/);
-    const wordLengthsCount = words.map(word => word.length)
+    const wordLengthsCount = words.map((word) => word.length);
     setInputText(wordLengthsCount);
-  }
+  };
 
-  // It handles the response to sumbit the form.
-  // This function will call other functoins to handle
-  // highlighting the keywords and fetching the response.
+  /** It handles the response to sumbit the form.
+  * This function will call other functoins to handle
+  * highlighting the keywords and fetching the response.
+  */
   const handleSubmit = async () => {
     setJaccard(-1);
     setInputText('');
@@ -127,13 +149,17 @@ function App() {
           setAPI(api);
         }
         // Display error message
-        setResponse(<mark>Please enter your API key and text to summarize.</mark>);
+        setResponse(
+          <mark>
+            Please enter your API key and text to summarize.
+          </mark>
+        );
       }
     } catch (error) {
       // Display error message
       setResponse(<mark>{error.message}</mark>);
     }
-  }
+  };
 
   // Create a function to show the form view
   const formView = (
@@ -145,7 +171,12 @@ function App() {
           ({(api !== '') ? 'Key Stored' : <a href="https://platform.openai.com/account/api-keys">Fetch API Key</a>})
         </label>
       </h2>
-      <Form setQuery={setQuery} setAPI={setAPI} onSubmit={handleSubmit} clearAll={clearAll} />
+      <Form
+        setQuery={setQuery}
+        setAPI={setAPI}
+        onSubmit={handleSubmit}
+        clearAll={clearAll}
+      />
       <div>
         <a href="https://github.com/frankling2020/react-chatgpt">Created by frankling 🐲</a>
       </div>
@@ -156,15 +187,23 @@ function App() {
   const resultView = (
     <div className="column todoapp stack-large scrollable">
       <h1>Original Text</h1>
-      <button type="reset" className="btn btn__secondary btn__sm"
-        onClick={(e) => { e.preventDefault(); setQuery(''); setSubmitView(true); }}>
+      <button
+        type="reset"
+        className="btn btn__secondary btn__sm"
+        onClick={(e) => {
+          e.preventDefault();
+          setQuery('');
+          setSubmitView(true);
+        }}
+      >
         &#8701; Back
       </button>
       <div className="css-fix"> {query} </div>
     </div>
   );
 
-  // Create a function to show the summary view with summary, Jaccard similarity and histogram
+  // Create a function to show the summary view with summary,
+  // Jaccard similarity and histogram
   const jaccardView = (<div><em>Jaccard Similarity: {jaccard}</em></div>);
   const summaryView = (
     <div className="column todoapp stack-large scrollable">
@@ -187,7 +226,8 @@ function App() {
     </div>
   );
 
-  // Return the form view if submitView is true, otherwise return the result view
+  // Return the form view if submitView is true, otherwise return
+  // the result view
   return (
     <div>
       <div className="row">

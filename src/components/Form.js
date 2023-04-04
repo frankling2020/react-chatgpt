@@ -1,13 +1,16 @@
 import React from 'react';
 
+/** Create a form with a text input and submit button
+* when the form is submitted, call props.onSubmit
+* and pass it the current value of the text input
+* when the form is reset, call props.onReset
+* and pass it the current value of the text input
+* when the text input changes, call props.onChange
+* and pass it the current value of the text input.
+* @param {*} props the props that are passed to the form
+* @return {Form} the form with api and text input and submit/reset button
+*/
 function Form(props) {
-  // create a form with a text input and submit button
-  // when the form is submitted, call props.onSubmit
-  // and pass it the current value of the text input
-  // when the form is reset, call props.onReset
-  // and pass it the current value of the text input
-  // when the text input changes, call props.onChange
-  // and pass it the current value of the text input.
   const handleSubmit = (e) => {
     e.preventDefault();
     props.onSubmit();
@@ -49,7 +52,11 @@ function Form(props) {
         <button type="submit" className="btn btn__primary btn__lg">
           Submit
         </button>
-        <button type="reset" className="btn btn__secondary btn__lg" onClick={props.clearAll}>
+        <button
+          type="reset"
+          className="btn btn__secondary btn__lg"
+          onClick={props.clearAll}
+        >
           Reset
         </button>
       </span>
