@@ -47,12 +47,11 @@ function App() {
 
   /** Create a function to fetch the response from the OpenAI API
   * using the input text and the API key
-  * and return a promise that resolves to the response
+  * @return {*} the response from the OpenAI API
   */
   const fetchResponse = async (input, apiKey) => {
     const config = new Configuration({ apiKey });
     const openai = new OpenAIApi(config);
-
     return openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -84,7 +83,6 @@ function App() {
     let q = query;
     let jaccardSim = 0;
     keywords.sort((a, b) => (b.length - a.length || a.localeCompare(b)));
-
     for (let keyword of keywords) {
       let color = getRandomPastelColor();
       let regWord = new RegExp(`\\b${keyword}\\b`, 'ig');
@@ -104,6 +102,7 @@ function App() {
     setJaccard(jaccardSim.toFixed(3));
     return [result, q];
   };
+
   // Create a function to display the response and
   // set state variables for response, query, and inputText.
   const displayResponse = async (input, api) => {
@@ -119,7 +118,6 @@ function App() {
         return keyword.trim();
       });
     const [r, q] = highlightKeywords(keywords, result, input);
-
     setResponse(<div dangerouslySetInnerHTML={{ __html: r }} />);
     setQuery(<div dangerouslySetInnerHTML={{ __html: q }} />);
     const words = result.toLowerCase().split(/\s+/);
