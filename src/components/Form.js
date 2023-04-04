@@ -9,8 +9,21 @@ function Form(props) {
     // and pass it the current value of the text input
     // when the text input changes, call props.onChange
     // and pass it the current value of the text input.
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        props.onSubmit();
+    };
+
+    const handleAPIChange = (e) => {
+        props.setAPI(e.target.value);
+    };
+
+    const handleQueryChange = (e) => {
+        props.setQuery(e.target.value); 
+    };
+
     return (
-        <form onSubmit={e => {e.preventDefault(); props.onSubmit();} }>
+        <form onSubmit={handleSubmit}>
             <input
                 type="password"
                 id="password-input"
@@ -19,7 +32,7 @@ function Form(props) {
                 placeholder="Enter your OpenAI API key here"
                 autoComplete="off"
                 value={props.api}
-                onChange={(e) => { props.setAPI(e.target.value); }}
+                onChange={handleAPIChange}
             />
 
             <textarea
@@ -31,7 +44,7 @@ function Form(props) {
                 placeholder="Enter your text here"
                 rows="16"
                 value={props.query}
-                onChange={(e) => { props.setQuery(e.target.value); }}
+                onChange={handleQueryChange}
             />
             <span>
                 <button type="submit" className="btn btn__primary btn__lg">

@@ -22,7 +22,7 @@ export const Histogram = ({ width, height, data }) => {
     const xScale = useMemo(() => {
         return d3
             .scaleLinear()
-            .domain([0, 30])            
+            .domain([0, 30])
             .range([10, boundsWidth]);
     }, [boundsWidth]);
 
@@ -44,7 +44,7 @@ export const Histogram = ({ width, height, data }) => {
     useEffect(() => {
         const svgElement = d3.select(axesRef.current);
         svgElement.selectAll("*").remove();
-        
+
         // add the x axis
         const xAxisGenerator = d3.axisBottom(xScale);
         svgElement
@@ -55,7 +55,7 @@ export const Histogram = ({ width, height, data }) => {
         // add the y axis
         const yAxisGenerator = d3.axisLeft(yScale);
         svgElement.append("g").call(yAxisGenerator);
-        
+
         // add the title
         svgElement.append("text")
             .attr("x", width / 2 - 50)

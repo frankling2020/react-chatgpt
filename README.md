@@ -36,8 +36,9 @@
 <p>Please see the deployment <a href="https://frankling2020.github.io/react-chatgpt/">here</a></p>
 
 ### Development
-- `npm install`: install the dependencies.
-- `npm run start`: see your version of the application.
+You can follow the steps below one-by-one
+- `npm install`: first install the dependencies for the project.
+- `npm run start`: see your version of the application after you change some codes.
 - `npm run deploy`: deploy the application after checking [this link](https://facebook.github.io/create-react-app/docs/deployment).
 
 ### Usage

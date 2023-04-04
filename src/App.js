@@ -20,9 +20,9 @@ function App(props) {
 	// query: the query that the user inputs
 	const [query, setQuery] = useState("");
 	// api: the API key that the user inputs
-    const [api, setAPI] = useState("");
+	const [api, setAPI] = useState("");
 	// inputText: the text that contains the orignal response
-	const [inputText , setInputText] = useState("");
+	const [inputText, setInputText] = useState("");
 
 	// Create the instructions text for ChatGPT to create a summary
 	const text = `
@@ -31,12 +31,11 @@ function App(props) {
 		2. extract keywords or important concepts from the summary or the original text 
 		and output those words in a new paragraph at the end of the respoonse where 
 		each word is separated by a comma after "Keywords:".
-
 	`;
 
 	// Create a function to generate a random pastel color
 	// to avoid any dark colors that may be hard to read
-	const GetRandomPastelColor = () => {
+	const getRandomPastelColor = () => {
 		const h = Math.floor(Math.random() * 360);
 		return `hsl(${h}deg, 100%, 90%)`;
 	};
@@ -44,20 +43,20 @@ function App(props) {
 	// Create a function to fetch the response from the OpenAI API
 	// using the input text and the API key
 	// and return a promise that resolves to the response
-	const FetchResponse = async (input, api_key) => {
+	const fetchResponse = async (input, api_key) => {
 		const config = new Configuration({ apiKey: api_key });
 		const openai = new OpenAIApi(config);
-		
+
 		return openai.createChatCompletion({
 			model: "gpt-3.5-turbo",
-			messages: [{role: 'system', content: text}, { role: "user", content: input }],
+			messages: [{ role: 'system', content: text }, { role: "user", content: input }],
 		});
 	};
 
 	// Create a function to clear the input text, query, and response in the form
 	// and reset the jaccard similarity to -1 as well as the histogram
-	const ClearAll = () => {
-        if (api !== "") {
+	const clearAll = () => {
+		if (api !== "") {
 			setAPI("");
 		}
 		if (query !== "") {
@@ -66,26 +65,26 @@ function App(props) {
 		setJaccard(-1);
 		setInputText("");
 		setResponse(`Hello from ChatGPT!`);
-    };
+	};
 
 	// Create a function to handle highlighting the keywords
 	// and return the highlighted text
 	// implemented with regex and the Jaccard similarity
-	const HighlightKeywords = (keywords, text, query) => {
+	const highlightKeywords = (keywords, text, query) => {
 		let result = text;
 		let q = query;
 		let jaccardSim = 0;
 		keywords.sort((a, b) => (b.length - a.length || a.localeCompare(b)));
 
 		for (let keyword of keywords) {
-			let color = GetRandomPastelColor();
+			let color = getRandomPastelColor();
 			let reg_word = new RegExp(`\\b${keyword}\\b`, 'ig');
 			if (result.match(reg_word) && q.match(reg_word)) {
 				jaccardSim += 1;
 			}
 			result = result.replaceAll(reg_word, `<mark style="background: ${color}!important">$&</mark>`);
 			q = q.replaceAll(reg_word, `<mark style="background: ${color}!important">$&</mark>`);
-			
+
 		}
 		jaccardSim /= keywords.length;
 		setJaccard(jaccardSim.toFixed(3));
@@ -94,34 +93,34 @@ function App(props) {
 
 	// Create a function to display the response and
 	// set state variables for response, query, and inputText.
-	const DisplayResponse = async (input, api) => {
-		const answer = await FetchResponse(input, api);
+	const displayResponse = async (input, api) => {
+		const answer = await fetchResponse(input, api);
 		let result = answer.data.choices[0].message.content;
 		result = result.substring(0, result.length - 1);
 		let paragraphs = result.split('\n\n').map((paragraph) => { return paragraph.trim().trimEnd('.'); })
 		const keywords = paragraphs[paragraphs.length - 1]
 			.split(':')[1].split(',')
 			.map((keyword) => { return keyword.trim(); });
-		let [r, q] = HighlightKeywords(keywords, result, input);
+		let [r, q] = highlightKeywords(keywords, result, input);
 
 		setResponse(<div dangerouslySetInnerHTML={{ __html: r }} />);
 		setQuery(<div dangerouslySetInnerHTML={{ __html: q }} />);
 		const words = result.toLowerCase().split(/\s+/);
-        const wordLengthsCount = words.map(word => word.length)
+		const wordLengthsCount = words.map(word => word.length)
 		setInputText(wordLengthsCount);
 	}
 
 	// It handles the response to sumbit the form.
 	// This function will call other functoins to handle
 	// highlighting the keywords and fetching the response.
-	const GetResponse = async () => {
+	const getResponse = async () => {
 		setJaccard(-1);
 		setInputText("");
 		try {
 			if (query.length !== 0 && api.length !== 0) {
 				setSubmitView(false);
 				setResponse(`Loading...`);
-				await DisplayResponse(query, api);
+				await displayResponse(query, api);
 			} else {
 				// Reset query to deal with empty query
 				if (query.length !== 0) {
@@ -145,13 +144,13 @@ function App(props) {
 		<div className="column todoapp stack-large">
 			<h1>Simple Summarizer </h1>
 			<h2 className="label-wrapper">
-                <label htmlFor="password-input" className="label__lg">
-                    What needs to be done? 
-					({ api !== ""?  "Key Stored":
+				<label htmlFor="password-input" className="label__lg">
+					What needs to be done?
+					({api !== "" ? "Key Stored" :
 						<a href="https://platform.openai.com/account/api-keys">Fetch API Key</a>})
-                </label>
-            </h2>
-			<Form setQuery={setQuery} setAPI={setAPI} onSubmit={GetResponse} clearAll={ClearAll}/>
+				</label>
+			</h2>
+			<Form setQuery={setQuery} setAPI={setAPI} onSubmit={getResponse} clearAll={clearAll} />
 			<div align='center'>
 				<a href="https://github.com/frankling2020/react-chatgpt">Created by frankling 🐲</a>
 			</div>
@@ -171,23 +170,24 @@ function App(props) {
 	);
 
 	// Create a function to show the summary view with summary, Jaccard similarity and histogram
-	const jaccardView = (<div><em>Jaccard Similarity: { jaccard }</em></div>);
+	const jaccardView = (<div><em>Jaccard Similarity: {jaccard}</em></div>);
 	const summaryView = (
 		<div className="column todoapp stack-large scrollable">
 			<h1>Summary and Keywords
-			<div style={{fontSize: "medium", color: "gray"}}>
-				<em>
-					For interpretation of analysis and visualization, see <a href="https://github.com/frankling2020/react-chatgpt#basic-rules-are">here</a>.
-				</em>
-			</div>
+				<div style={{ fontSize: "medium", color: "gray" }}>
+					<em>
+						For interpretation of analysis and visualization, 
+						see <a href="https://github.com/frankling2020/react-chatgpt#basic-rules-are">here</a>.
+					</em>
+				</div>
 			</h1>
 			{jaccard !== -1 && jaccardView}
-			<div className="css-fix"> 
-				{response} 
+			<div className="css-fix">
+				{response}
 			</div>
-			{inputText.length !== 0 && 
-				<div align='center'> 
-					<Histogram data={inputText} width={360} height={360} />  
+			{inputText.length !== 0 &&
+				<div align='center'>
+					<Histogram data={inputText} width={360} height={360} />
 				</div>}
 		</div>
 	);
@@ -196,8 +196,8 @@ function App(props) {
 	return (
 		<div>
 			<div className="row">
-				{ submitView? formView : resultView } 
-				{ summaryView }
+				{submitView ? formView : resultView}
+				{summaryView}
 			</div>
 		</div>
 
