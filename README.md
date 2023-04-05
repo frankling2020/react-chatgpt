@@ -61,6 +61,10 @@ You can follow the steps below one-by-one
     <img src="examples/1.png" style="width:75%">
 </div>
 
+### References
+- [react-graph-gallery histogram](https://www.react-graph-gallery.com/histogram)
+- [MDN react](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components#defining_our_first_component)
+
 
 ## Getting Started with Create React App (Default React Documentation)
 
