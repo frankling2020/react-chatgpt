@@ -51,7 +51,10 @@ function App() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ "api": api, "query": query })
         });
-        const data = await response.json();
+        const result = await response.json();
+        console.log(result);
+        const response2 = await fetch(`/api/result/${result.task_id}`);
+        const data = await response2.json();
         console.log(data);
         
         setSubmitView(false);
