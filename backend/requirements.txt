@@ -1,0 +1,5 @@
+Flask
+Flask_Cors
+openai
+gunicorn
+gevent

@@ -1,0 +1,26 @@
+import React from 'react';
+
+
+/** Create a function to generate a random pastel color
+* to avoid any dark colors that may be hard to read
+* @return {*} a random pastel color
+*/
+const getRandomPastelColor = () => {
+  const h = Math.floor(Math.random() * 360);
+  return `hsl(${h}deg, 100%, 90%)`;
+};
+
+// Create a function to handle highlighting the keywords
+// and return the highlighted text
+// implemented with regex and the Jaccard similarity
+export const highlightKeywords = (keywords, text) => {
+  let highlightedText = text;
+  if (keywords.length > 0) {
+    keywords.forEach(keyword => {
+      const color = getRandomPastelColor();
+      highlightedText = highlightedText.replaceAll(new RegExp(`\\b${keyword}\\b`, 'ig'),
+        `<mark style='background: ${color}'>$&</mark>`);
+    });
+  }
+  return <div dangerouslySetInnerHTML={{ __html: highlightedText }} />
+};
