@@ -11,6 +11,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from celery.result import AsyncResult
 from celery_task import fetch_summary_from_openai
+import socket
 
 
 app = Flask(__name__)
@@ -41,7 +42,9 @@ def fetch_summary():
     api = request.json["api"]
     query = request.json["query"]
     task = fetch_summary_from_openai.delay(api, query)
-    return {"task_id": task.id}
+    hostname = socket.gethostname()
+    host_ip = socket.gethostbyname(hostname)
+    return {"task_id": task.id, "host_ip": host_ip, "hostname": hostname}
 
 
 if __name__ == "__main__":

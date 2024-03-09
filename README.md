@@ -1,9 +1,12 @@
 <h1 align="center">
     React-ChatGPT
 </h1>
+
 <p align="center">
     <strong>Simple Full-Stack Summarizer based on ChatGPT</strong>
 </p>
+
+[![CodeQL](https://github.com/frankling2020/react-chatgpt/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/frankling2020/react-chatgpt/actions/workflows/github-code-scanning/codeql)
 
 ## Simple Summarizer
 ### Description
@@ -11,7 +14,7 @@
     It contains a React-based summarizer built with ChatGPT whose primary purpose of the application is to generate a summary of paragraphs with highlighting of the relevant keywords. It aims to facilitate the comprehension of the original text and to enhance user trust in the generated summary.
 </p>
 <p>
-    <b>Tools</b>: <em>Docker, OpenAI, ReactJS, Flask (gunicorn + gevent), Celery (Redis)</em>
+    <b>Tools</b>: <em>Docker, OpenAI, ReactJS, Flask (gunicorn + gevent), Celery (Redis), Nginx</em>
 </p>
 
 ---
@@ -24,7 +27,7 @@
 - **Gevent**: it will allow web application to scale to potentially thousands of concurrent requests on a single process. It mainly replaces blocking parts with compatible cooperative counterparts from gevent package by "monkey patching". It uses epoll or kqueue or libevent for highly scalable non-blocking I/O.
 - **Celery**: Celery is a powerful and robust distributed task queue system that enables asynchronous task execution, scheduling, and distributed work processing. Celery supports distributing tasks across multiple workers, allowing applications to scale horizontally by adding more Celery workers as needed.
 - **Redis**: Redis provides a fast, lightweight, and efficient message queue system, making it suitable for handling large volumes of tasks and ensuring reliable task delivery.
-- **Nginx (TO-DO)**: NGINX is well known as a high‑performance load balancer, cache, and web server.
+- **Nginx**: NGINX is well known as a high‑performance load balancer, cache, and web server. It is often preferred over Linux Virtual Server (LVS) for load balancing and reverse proxying. It is a full-featured web server and reverse proxy, providing a complete solution with built-in load balancing, caching, access control, and other features. LVS, on the other hand, is primarily focused on load balancing and requires additional components for other functionalities.
 
 ---
 
@@ -79,12 +82,21 @@ You can start the broker to make the web appliaction more scalable with the comm
 The detailed configuration is under `backend/celeryconfig.py`
 
 
-#### Development with Dokcer
+#### Load Balance: Nginx (to-do)
+Please see the configuration in `nginx.conf`. Run with
+- `nginx -g daemon off`
+
+
+#### Development with Docker
 Docker is a good tool to deploy applications in different platforms. Here you can see we have `Dockerfile` in both `frontend/` and `backend/` folders and `docker-compose.yaml` in the directory. So, you can directly use the command `docker-compose -d up` with `docker` installed in your computer. I would recommend you to use Docker Desktop which can inspect the containers with GUI shown below.
+
 
 <div align="center">
     <img src="examples/docker-impl.png" style="width:70%">
+    <img src="examples/nginx.png" style="width:70%">
 </div>
+
+We can choose either Node or Nginx as the web server. The top figure is with Node, while the bottom figure is with Nginx. It is worth noticing that with Nginx, the frontend server with Node only need to complete the compilation.
 
 The following figure shows the success deployment and some console log for your debegging in the web inspection mode.
 <div align="center">
@@ -118,6 +130,7 @@ The following figure shows the success deployment and some console log for your 
 - [MDN react](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components#defining_our_first_component)
 - [Gunicorn with Flask](https://flask.palletsprojects.com/en/2.3.x/deploying/gunicorn/)
 - [Flask with Celery](https://flask.palletsprojects.com/en/2.3.x/patterns/celery/)
+- [Nginx: Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html)
 
 
 ## Getting Started with Create React App (Default React Documentation)
