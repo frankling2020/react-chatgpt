@@ -5,7 +5,7 @@
 	"dependencies": {
 		"@testing-library/jest-dom": "^6.4.2",
 		"@testing-library/react": "^14.2.1",
-		"@testing-library/user-event": "^13.5.0",
+		"@testing-library/user-event": "^14.5.2",
 		"d3": "^7.9.0",
 		"http-proxy-middleware": "^2.0.6",
 		"openai": "^4.29.1",
