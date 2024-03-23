@@ -1,7 +1,24 @@
+"""Celery task
+
+This module contains the Celery task that fetches a summary fro
+m OpenAI using the provided query.
+
+Attributes:
+    celery_app (Celery): The Celery instance used to create the task.
+    fetch_summary_from_openai (Task): The Celery task that fetches a summary from OpenAI.
+"""
+
+from celery import Celery
 from openai import OpenAI
 from prompt import prompt_text, instruction_text
 
 
+# Initialize Celery instance and load configuration from the celeryconfig file
+celery_app = Celery("celery_task")
+celery_app.config_from_object("celeryconfig")
+
+
+@celery_app.task
 def fetch_summary_from_openai(api, query):
     """Fetch a summary from OpenAI using the provided query.
 
