@@ -8,13 +8,8 @@
 ## Simple Summarizer
 ### Description
 <p>
-    It contains a React-based summarizer built with ChatGPT whose primary purpose of the application is to generate a summary of paragraphs with highlighting of the relevant keywords, jaccard similarity, and readability with streaming support. It aims to facilitate the comprehension of the original text and to enhance user trust in the generated summary.
+    It contains a React-based summarizer built with ChatGPT whose primary purpose of the application is to generate a summary of paragraphs with highlighting of the relevant keywords. It aims to facilitate the comprehension of the original text and to enhance user trust in the generated summary.
 </p>
-
-<div align="center">
-    <img src="examples/demo.gif" style="width:75%">
-</div>
-
 
 ### Code Design and Explanation
 <p>
@@ -45,7 +40,6 @@ You can follow the steps below one-by-one
 - `npm install`: first install the dependencies for the project.
 - `npm run start`: see your version of the application after you change some codes.
 - `npm run deploy`: deploy the application after checking [this link](https://facebook.github.io/create-react-app/docs/deployment).
-Or you can use Docker command `docker run -it -p 3000:3000 $(docker build -q .)`.
 
 ### Usage
 <p>
