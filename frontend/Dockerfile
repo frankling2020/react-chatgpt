@@ -6,4 +6,6 @@ RUN npm install
 ENV PATH /app/node_modules/.bin:$PATH
 COPY . .
 RUN npm run build
-CMD [ "npm", "run", "start"]
+
+# No need to run the server here, it will be run by the nginx server
+# CMD [ "npm", "run", "start"]
