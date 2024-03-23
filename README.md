@@ -14,7 +14,7 @@
     It contains a React-based summarizer built with ChatGPT whose primary purpose of the application is to generate a summary of paragraphs with highlighting of the relevant keywords. It aims to facilitate the comprehension of the original text and to enhance user trust in the generated summary.
 </p>
 <p>
-    <b>Tools</b>: <em>Docker, OpenAI, ReactJS, Flask (gunicorn + gevent), Celery (Redis), Nginx</em>
+    <b>Tools</b>: <em>Docker, OpenAI, ReactJS, Flask (gunicorn + gevent), Celery (Redis + MongoDB), Nginx, JMeter</em>
 </p>
 
 ---
@@ -27,7 +27,9 @@
 - **Gevent**: it will allow web application to scale to potentially thousands of concurrent requests on a single process. It mainly replaces blocking parts with compatible cooperative counterparts from gevent package by "monkey patching". It uses epoll or kqueue or libevent for highly scalable non-blocking I/O.
 - **Celery**: Celery is a powerful and robust distributed task queue system that enables asynchronous task execution, scheduling, and distributed work processing. Celery supports distributing tasks across multiple workers, allowing applications to scale horizontally by adding more Celery workers as needed.
 - **Redis**: Redis provides a fast, lightweight, and efficient message queue system, making it suitable for handling large volumes of tasks and ensuring reliable task delivery.
+- **MongoDB**: Using MongoDB as the backend along with Redis as the message broker for Celery can provide a powerful and scalable solution for asynchronous task processing in web applications. While Redis is an excellent message broker, it is not designed for persistent storage of complex data structures like task results. MongoDB, on the other hand, provides a durable and scalable solution for storing task results, metadata, and other related information.
 - **Nginx**: NGINX is well known as a high‑performance load balancer, cache, and web server. It is often preferred over Linux Virtual Server (LVS) for load balancing and reverse proxying. It is a full-featured web server and reverse proxy, providing a complete solution with built-in load balancing, caching, access control, and other features. LVS, on the other hand, is primarily focused on load balancing and requires additional components for other functionalities.
+- **JMeter**:  JMeter is a popular open-source tool used for load testing and performance testing of web applications, among other types of applications. JMeter generates detailed reports and graphs that help analyze the test results, including response times, throughput, and resource utilization. This information is valuable for identifying bottlenecks and optimizing the application's performance.
 
 ---
 
@@ -82,9 +84,29 @@ You can start the broker to make the web appliaction more scalable with the comm
 The detailed configuration is under `backend/celeryconfig.py`
 
 
-#### Load Balance: Nginx (to-do)
+#### Load Balance: Nginx (TO-DO)
 Please see the configuration in `nginx.conf`. Run with
 - `nginx -g daemon off`
+
+**Comment**: Currently, I am not familiar with the high-level Nginx operations.
+
+
+#### JMeter (Simple test: TO-DO)
+- See the files under `jmeter-tests`. In the figure below, Docker Desktop plug-in `qainsights/jmeter` with JMeter is used. In the test, I set the test with `time.sleep(2)` to complete the work.
+
+<div align="center">
+    <img src="examples/jmeter.png" style="width:70%">
+</div>
+
+**Configuration**:
+- Image: qainsights/jmeter:latest
+- Volume: react-chatgpt/jmeter-tests:/jmeter-tests
+- Test plan: /jmeter-tests/web-test-plan.jmx
+- Proxy: host.docker.internal:8001
+- Logs: /jmeter-tests/run.log
+- Run.log: /jmeter-tests/result.jtl
+
+**Comment**: Currently, I am trying to understand the concepts. Here is a just simple test demo.
 
 
 #### Development with Docker
@@ -96,13 +118,14 @@ Docker is a good tool to deploy applications in different platforms. Here you ca
     <img src="examples/nginx.png" style="width:70%">
 </div>
 
+
+
 We can choose either Node or Nginx as the web server. The top figure is with Node, while the bottom figure is with Nginx. It is worth noticing that with Nginx, the frontend server with Node only need to complete the compilation.
 
 The following figure shows the success deployment and some console log for your debegging in the web inspection mode.
 <div align="center">
     <img src="examples/inspection.png" style="width:90%">
 </div>
-
 
 ### Usage
 <p>

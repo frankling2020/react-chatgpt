@@ -5,3 +5,4 @@ gunicorn
 gevent
 celery
 redis
+pymongo
