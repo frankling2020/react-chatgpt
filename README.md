@@ -26,12 +26,12 @@
 
 ---
 For different usages:
-- Frontend only: [frankling2020/react-chatgpt@3f264a8](https://github.com/frankling2020/react-chatgpt/tree/3f264a8)
-- Frontend and Backend (Flask): [frankling2020/react-chatgpt@0288114](https://github.com/frankling2020/react-chatgpt/tree/0288114)
-- With Celery and Redis: [frankling2020/react-chatgpt@a107670](https://github.com/frankling2020/react-chatgpt/tree/a107670)
-- With Nginx: [frankling2020/react-chatgpt@11abd0b](https://github.com/frankling2020/react-chatgpt/tree/11abd0b)
-- With JMeter: [frankling2020/react-chatgpt@9abe8ed](https://github.com/frankling2020/react-chatgpt/tree/9abe8ed)
-- Streaming with Flask and Nginx
+- [Frontend only](https://github.com/frankling2020/react-chatgpt/tree/14e64d47605a96d34d01939ab11d60963376b61c)
+- [Frontend and Backend (Flask)](https://github.com/frankling2020/react-chatgpt/tree/b8ece92e1ebb819aebf366dc9cc071d71228df7b)
+- [Celery and Redis](https://github.com/frankling2020/react-chatgpt/tree/e30dd17f802e963a2e452c967c0406d3aec473d5)
+- [Nginx](https://github.com/frankling2020/react-chatgpt/tree/3b98a98b7d3f1cf3ba7f8c938d1736e54481aa91)
+- [With JMeter](https://github.com/frankling2020/react-chatgpt/tree/905091edf532f926ed0952012500cb817f24f204)
+- [Streaming with Flask and Nginx](https://github.com/frankling2020/react-chatgpt/tree/be07e23d79e4aa251ff89daf456f57dceafa9a93)
 
 ---
 #### Why Tools?
