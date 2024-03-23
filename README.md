@@ -7,6 +7,9 @@
 </p>
 
 [![CodeQL](https://github.com/frankling2020/react-chatgpt/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/frankling2020/react-chatgpt/actions/workflows/github-code-scanning/codeql)
+![GitHub License](https://img.shields.io/github/license/frankling2020/react-chatgpt?cacheSeconds=86400)
+![GitHub Release](https://img.shields.io/github/v/release/frankling2020/react-chatgpt?cacheSeconds=86400)
+
 
 ## Simple Summarizer
 ### Description
@@ -17,8 +20,20 @@
     <b>Tools</b>: <em>Docker, OpenAI, ReactJS, Flask (gunicorn + gevent), Celery (Redis + MongoDB), Nginx, JMeter</em>
 </p>
 
----
+<div align="center">
+    <img src="examples/demo.gif" style="width:90%">
+</div>
 
+---
+For different usages:
+- Frontend only: [frankling2020/react-chatgpt@3f264a8](https://github.com/frankling2020/react-chatgpt/tree/3f264a8)
+- Frontend and Backend (Flask): [frankling2020/react-chatgpt@0288114](https://github.com/frankling2020/react-chatgpt/tree/0288114)
+- With Celery and Redis: [frankling2020/react-chatgpt@a107670](https://github.com/frankling2020/react-chatgpt/tree/a107670)
+- With Nginx: [frankling2020/react-chatgpt@11abd0b](https://github.com/frankling2020/react-chatgpt/tree/11abd0b)
+- With JMeter: [frankling2020/react-chatgpt@9abe8ed](https://github.com/frankling2020/react-chatgpt/tree/9abe8ed)
+- Streaming with Flask and Nginx
+
+---
 #### Why Tools?
 - **Docker**: Docker is widely used for deploying web applications. Many cloud providers, such as AWS, Google Cloud, and Azure, have native support and integration with Docker, making it easier to deploy and manage containerized applications in their environments. Besides, Docker has a more mature set of tooling and orchestration solutions, such as Docker Compose, Docker Swarm, and integrations with Kubernetes. These tools simplify the management and scaling of containerized applications.
 - **ReactJS**: React is a popular choice for building modern web application frontends. React's component-based architecture promotes modularity, reusability, and encapsulation of UI elements. This makes it easier to build and maintain complex user interfaces by breaking them down into smaller, self-contained components.

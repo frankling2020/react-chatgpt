@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import Form from './components/Form';
 import { Histogram } from './components/Histogram';
-import { highlightKeywords } from './utils/highlightKeywords';
+import { postprocess } from './utils/postprocess';
 
 /** The main component of the application
 * @return {*} the main component
@@ -36,33 +36,77 @@ function App() {
     setResponse('Hello from ChatGPT!');
   };
 
+  /** This function will call the OpenAI API to get the response.
+   * @call "POST /api/submit" and "GET /api/result/:task_id"
+   * @param {string} api - the API key
+   * @param {string} query - the query
+   * @return {Promise} the response from the OpenAI API
+   * @throws {Error} if the API key is invalid
+   */
+  const defaultSubmit = async (api, query) => {
+    const response = await fetch("/api/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ "api": api, "query": query })
+    });
+    const result = await response.json();
+    console.log(result);
+    const response2 = await fetch(`/api/result/${result.task_id}`);
+    const data = await response2.json();
+    setSubmitView(false);
+    return data.content;
+  };
+
+  /** This function will call the OpenAI API to get the response.
+   * @call "POST /api/stream"
+   * @param {string} api - the API key
+   * @param {string} query - the query
+   * @return {Promise} the response from the OpenAI API
+   */
+  const streamSubmit = async (api, query) => {
+    const response = await fetch("/api/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ "api": api, "query": query })
+    });
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    setSubmitView(false);
+    let data = "";
+    let done = false;
+    do {
+      const { value, done: doneReading } = await reader.read();
+      if (doneReading) {
+        done = true;
+      }
+      else {
+        data += value;
+        setResponse(data);
+      }
+    } while (!done);
+    return data;
+  };
+
   /** It handles the response to sumbit the form.
   * This function will call other functoins to handle
   * highlighting the keywords and fetching the response.
   */
-  const handleSubmit = async () => {
-    setWordCounts([]);
+  const handleSubmit = async (stream) => {
     setJaccard(-1);
+    setWordCounts([]);
     if (query && api) {
       setResponse('Loading...');
       try {
-        const response = await fetch("/api/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ "api": api, "query": query })
-        });
-        const result = await response.json();
-        console.log(result);
-        const response2 = await fetch(`/api/result/${result.task_id}`);
-        const data = await response2.json();
-        console.log(data);
-        
-        setSubmitView(false);
-        setResponse(highlightKeywords(data.keywords, data.content));
-        setQuery(highlightKeywords(data.keywords, query))
-        setJaccard(data.jaccard);
-        console.log(data.content);
-        const words = data.content.toLowerCase().split(/\s+/);
+        let data_content = "";
+        if (stream) data_content = await streamSubmit(api, query);
+        else data_content = await defaultSubmit(api, query);
+        setResponse(data_content);
+
+        const postprocessed_data = postprocess(data_content, query);
+        setResponse(postprocessed_data.response);
+        setQuery(postprocessed_data.query);
+        setJaccard(postprocessed_data.jaccard_similarity);
+        console.log(data_content);
+        const words = data_content.toLowerCase().split(/\s+/);
         const wordLengthsCount = words.map((word) => word.length);
         setWordCounts(wordLengthsCount);
       } catch (error) {

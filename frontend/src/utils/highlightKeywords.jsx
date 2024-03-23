@@ -15,12 +15,19 @@ const getRandomPastelColor = () => {
 // implemented with regex and the Jaccard similarity
 export const highlightKeywords = (keywords, text) => {
   let highlightedText = text;
+  let seen_words = new Set();
   if (keywords.length > 0) {
     keywords.forEach(keyword => {
-      const color = getRandomPastelColor();
-      highlightedText = highlightedText.replaceAll(new RegExp(`\\b${keyword}\\b`, 'ig'),
-        `<mark style='background: ${color}'>$&</mark>`);
+      const regex = new RegExp(`\\b${keyword}\\b`, 'ig');
+      if (text.match(regex)) {
+        seen_words.add(keyword);
+        const color = getRandomPastelColor();
+        highlightedText = highlightedText.replaceAll(regex,
+          `<mark style='background: ${color}'>$&</mark>`);
+      }
     });
   }
-  return <div dangerouslySetInnerHTML={{ __html: highlightedText }} />
+
+  const highlighted_text = <div dangerouslySetInnerHTML={{ __html: highlightedText }} />;
+  return {"content": highlighted_text, "keywords": seen_words}
 };

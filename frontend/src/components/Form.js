@@ -11,9 +11,11 @@ import React from 'react';
 * @return {Form} the form with api and text input and submit/reset button
 */
 function Form(props) {
-  const handleSubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    props.onSubmit();
+    const submit_name = e.nativeEvent.submitter.name;
+    props.onSubmit(submit_name === 'stream');
+    e.target.reset();
   };
 
   const handleAPIChange = (e) => {
@@ -25,7 +27,7 @@ function Form(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={submitHandler}>
       <input
         type="password"
         id="password-input"
@@ -49,8 +51,11 @@ function Form(props) {
         onChange={handleQueryChange}
       />
       <span>
-        <button type="submit" className="btn btn__primary btn__lg">
+        <button name="submit" type="submit" className="btn btn__primary btn__lg">
           Submit
+        </button>
+        <button name="stream" type="submit" className="btn btn__primary btn__lg">
+          Stream
         </button>
         <button
           type="reset"

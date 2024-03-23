@@ -3,12 +3,11 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^13.4.0",
-		"@testing-library/user-event": "^13.5.0",
-		"d3": "^7.8.4",
+		"@testing-library/jest-dom": "^6.4.2",
+		"@testing-library/react": "^14.2.1",
+		"@testing-library/user-event": "^14.5.2",
+		"d3": "^7.9.0",
 		"http-proxy-middleware": "^2.0.6",
-		"openai": "^4.28.4",
 		"react": "^18.2.0",
 		"react-d3": "^0.4.0",
 		"react-dom": "^18.2.0"
@@ -43,10 +42,11 @@
 		]
 	},
 	"devDependencies": {
+		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
 		"eslint": "^8.37.0",
 		"eslint-config-google": "^0.14.0",
-		"eslint-plugin-react": "^7.32.2",
-		"gh-pages": "^5.0.0",
+		"eslint-plugin-react": "^7.34.1",
+		"gh-pages": "^6.1.1",
 		"react-scripts": "^5.0.1"
 	}
 }
