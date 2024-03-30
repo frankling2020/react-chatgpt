@@ -6,3 +6,6 @@ gevent
 celery
 redis
 pymongo
+presidio_analyzer
+presidio_anonymizer
+spacy

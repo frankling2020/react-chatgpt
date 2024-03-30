@@ -99,6 +99,7 @@ function App() {
         let data_content = "";
         if (stream) data_content = await streamSubmit(api, query);
         else data_content = await defaultSubmit(api, query);
+        data_content = data_content.substring(0, data_content.length - 1);
         setResponse(data_content);
 
         const postprocessed_data = postprocess(data_content, query);
