@@ -61,7 +61,10 @@ For different usages:
 - Jaccard similarity is widely used to compute the similarity of two set. In this case, I calculate it with respect to keywords.
 - Word length frequency can somehow reflect the frequency of rare words and [one paper](https://arxiv.org/abs/2301.11305v1) also shows that there are some statistical patterns in machine-generated texts. 
     Word length may be one way to approach the ChatGPT detection. It will be meaningful to visualize the distribution.
-- Anonymization is a critical issue in the summarization task. I use Presidio to protect the PII information in the text. It is a good practice to protect the privacy of the users. Redis will help to store the PII information in the cache with hash keys. The input rephrasing will be done with the help of Presidio. The idea is inspired by the [Microsoft Presidio](https://microsoft.github.io/presidio/) project and the paper [Can Sensitive Information Be Deleted From LLMs? Objectives for Defending Against Extraction Attacks](https://arxiv.org/abs/2309.17410).
+- Anonymization is a critical issue in the summarization task. I use Presidio to protect the PII information in the text. It is a good practice to protect the privacy of the users. Redis will help to store the PII information in the cache with hash keys. The input rephrasing will be done with the help of Presidio. The idea is inspired by the [Microsoft Presidio](https://microsoft.github.io/presidio/) project and the paper [Can Sensitive Information Be Deleted From LLMs? Objectives for Defending Against Extraction Attacks](https://arxiv.org/abs/2309.17410). You can see the sample below without mapping the PII information to the original text.
+<div align="center">
+    <img src="examples/pii_sample.png" style="width:75%">
+</div>
 
 #### <strong>Basic rules</strong> are:
 - If the Jaccard similarity is lower than 0.7, you may doubt the results.

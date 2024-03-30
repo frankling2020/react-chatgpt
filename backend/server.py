@@ -36,6 +36,7 @@ def get_result_task(task_id):
         dict: A dictionary containing the result of the Celery task.
     """
     result = AsyncResult(task_id).get()
+    result["content"] = result["content"].replace("<", "").replace(">", "")
     entity_mapping = json.loads(redis_client.hget("entity_mapping", task_id))
     result["content"] = anonymous_task.deanonymize(result["content"], entity_mapping)
     return jsonify(result)
@@ -78,3 +79,4 @@ def fetch_summary():
 
 if __name__ == "__main__":
     app.run()
+    redis_client.close()

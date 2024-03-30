@@ -78,8 +78,7 @@ class PresidioTask:
         def replace(match):
             name = f"<{match.group(0)}>"
             return reversed_mapping[name]
-        result = self.pattern.sub(replace, text)
-        return result.replace("<", "").replace(">", "")
+        return self.pattern.sub(replace, text)
 
 # task = PresidioTask()
 # task.clear_entity_mapping()
