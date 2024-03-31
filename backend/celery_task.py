@@ -11,11 +11,14 @@ Attributes:
 from celery import Celery
 from openai import OpenAI
 from prompt import prompt_text, instruction_text
+from presidio_task import PresidioTask
 
 
 # Initialize Celery instance and load configuration from the celeryconfig file
 celery_app = Celery("celery_task")
 celery_app.config_from_object("celeryconfig")
+anonymous_task = PresidioTask()
+logger = celery_app.log.get_default_logger()
 
 
 def openai_response(api, query, stream=False):
@@ -56,6 +59,9 @@ def fetch_summary_from_openai(api, query):
         dict: A dictionary containing the response content, a list of sorted keywords, 
         and the Jaccard similarity score.
     """
+    # Anonymize the query using Presidio
+    anonymous_query, entity_mapping = anonymous_task.anonymize(query)
+    logger.info(f"Anonymized query: {anonymous_query}")
     # Create OpenAI client and send the query to the model
     completion = openai_response(api, query)
     # Default response in case of an error
@@ -63,6 +69,8 @@ def fetch_summary_from_openai(api, query):
     try:
         # Extract response content
         response = completion.choices[0].message.content
+        # De-anonymize the response using the entity mapping
+        response = anonymous_task.deanonymize(response, entity_mapping)
         # Update the default response with the extracted data
         default_response["content"] = response
     except Exception as e:

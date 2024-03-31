@@ -11,7 +11,6 @@ from flask import Flask, request, jsonify, stream_with_context
 from flask_cors import CORS
 from celery.result import AsyncResult
 from celery_task import fetch_summary_from_openai, openai_response
-from presidio_task import PresidioTask
 import socket
 import os
 import json
@@ -20,9 +19,6 @@ import redis
 
 app = Flask(__name__)
 CORS(app)
-
-anonymous_task = PresidioTask()
-redis_client = redis.Redis.from_url(os.environ.get("REDIS_MIDDLE_URL"))
 
 
 @app.route("/result/<task_id>", methods=["GET"])
@@ -36,9 +32,6 @@ def get_result_task(task_id):
         dict: A dictionary containing the result of the Celery task.
     """
     result = AsyncResult(task_id).get()
-    result["content"] = result["content"].replace("<", "").replace(">", "")
-    entity_mapping = json.loads(redis_client.hget("entity_mapping", task_id))
-    result["content"] = anonymous_task.deanonymize(result["content"], entity_mapping)
     return jsonify(result)
 
 
@@ -69,9 +62,7 @@ def fetch_summary():
     """
     api = request.json["api"]
     query = request.json["query"]
-    anonymous_query, entity_mapping = anonymous_task.anonymize(query)
-    task = fetch_summary_from_openai.delay(api, anonymous_query)
-    redis_client.hset("entity_mapping", task.id, json.dumps(entity_mapping))
+    task = fetch_summary_from_openai.delay(api, query)
     hostname = socket.gethostname()
     host_ip = socket.gethostbyname(hostname)
     return {"task_id": task.id, "host_ip": host_ip, "hostname": hostname}
@@ -79,4 +70,3 @@ def fetch_summary():
 
 if __name__ == "__main__":
     app.run()
-    redis_client.close()
