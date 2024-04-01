@@ -1,5 +1,5 @@
 <h1 align="center">
-    React-ChatGPT
+    React Summarizer
 </h1>
 
 <p align="center">
