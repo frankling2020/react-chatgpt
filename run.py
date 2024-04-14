@@ -191,28 +191,28 @@ def create_sidebar():
     with st.sidebar:
         st.subheader("Demo Video")
         video_demo()
-        st.write("Upload and Call Functions")
-        uploaded_files = st.file_uploader(
-            "Upload Python File", type="py", accept_multiple_files=True
-        )
-        if uploaded_files:
-            # Create a module from the uploaded file
-            create_modules(uploaded_files)
-            module = st.session_state.usr_module
-            # Dropdown to select function to call
-            function_names = [
-                name for name in dir(module) if callable(getattr(module, name))
-            ]
-            selected_function = st.selectbox("Select function to call:", function_names)
-            # Get selected function from the module
-            function_to_call = getattr(module, selected_function)
-            # Button to call selected function
-            if st.button("Call Function"):
-                # Call the selected function
-                result = function_to_call()
-                st.write(f"Result of {selected_function}: {result}")
-        # Button to start a new session
         with st.form("api_key_form", clear_on_submit=True):
+            st.write("Upload and Call Functions")
+            uploaded_files = st.file_uploader(
+                "Upload Python File", type="py", accept_multiple_files=True
+            )
+            if uploaded_files:
+                # Create a module from the uploaded file
+                create_modules(uploaded_files)
+                module = st.session_state.usr_module
+                # Dropdown to select function to call
+                function_names = [
+                    name for name in dir(module) if callable(getattr(module, name))
+                ]
+                selected_function = st.selectbox("Select function to call:", function_names)
+                # Get selected function from the module
+                function_to_call = getattr(module, selected_function)
+                # Button to call selected function
+                if st.button("Call Function"):
+                    # Call the selected function
+                    result = function_to_call()
+                    st.write(f"Result of {selected_function}: {result}")
+            # Button to start a new session
             genai_new_key = st.text_input("Enter Google API Key", type="password")
             start_bttn = st.form_submit_button("Start New Session")
             if start_bttn:
