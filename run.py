@@ -174,8 +174,6 @@ def create_modules(uploaded_files=None):
     module = st.session_state.usr_module
     for uploaded_file in uploaded_files:
         content = uploaded_file.read().decode("utf-8")
-        with st.expander(f"Uploaded File: {uploaded_file.name}"):
-            st.code(content, language="python")
         # Create a module from the uploaded file
         exec(content, module.__dict__)
 
@@ -199,19 +197,6 @@ def create_sidebar():
             if uploaded_files:
                 # Create a module from the uploaded file
                 create_modules(uploaded_files)
-                module = st.session_state.usr_module
-                # Dropdown to select function to call
-                function_names = [
-                    name for name in dir(module) if callable(getattr(module, name))
-                ]
-                selected_function = st.selectbox("Select function to call:", function_names)
-                # Get selected function from the module
-                function_to_call = getattr(module, selected_function)
-                # Button to call selected function
-                if st.button("Call Function"):
-                    # Call the selected function
-                    result = function_to_call()
-                    st.write(f"Result of {selected_function}: {result}")
             # Button to start a new session
             genai_new_key = st.text_input("Enter Google API Key", type="password")
             start_bttn = st.form_submit_button("Start New Session")
@@ -221,7 +206,15 @@ def create_sidebar():
                     genai.configure(api_key=st.session_state.google_api_key)
             if st.form_submit_button("Reset Session"):
                 reset_chat_history()
+                st.session_state.usr_module.__dict__.clear()
                 st.session_state.google_api_key = None
+        module = st.session_state.usr_module
+        # Dropdown to select function to call
+        if module:
+            function_names = [
+                name for name in dir(module) if callable(getattr(module, name))
+            ]
+            selected_function = st.selectbox("Select function to call:", function_names)
     return start_bttn
 
 
